@@ -1,0 +1,13 @@
+{
+  "name": "janevalencia-jitera-qa-test",
+  "version": "1.0.0",
+  "description": "Jitera's QA Automation assessment done by applicant Jane Valencia",
+  "scripts": {
+    "cypress:open" : "cypress open"
+  },
+  "author": "Jane Valencia",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^10.6.0"
+  }
+}
