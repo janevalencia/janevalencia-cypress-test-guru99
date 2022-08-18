@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Jitera's QA Automation assessment done by applicant Jane Valencia",
   "scripts": {
-    "cypress:open" : "cypress open"
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
+    "cypress:spec": "cypress run --spec" 
   },
   "author": "Jane Valencia",
   "license": "ISC",
