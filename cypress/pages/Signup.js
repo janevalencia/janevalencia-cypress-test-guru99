@@ -16,18 +16,18 @@ class Signup {
     }
 
     // Validate submitting invalid empty email to signup form.
-    validateEmptyEmail(expectedInputMsg) {
+    validateEmptyEmail(expectedInputErrMsg) {
         // Click signup button.
         cy.get(`input[type="submit"]`).click();
 
         // Check for invalid input message prompt.
-        cy.get('#message9').should('have.text', expectedInputMsg);
+        cy.get('#message9').should('have.text', expectedInputErrMsg);
 
         return this;
     }
 
     // Validate submitting invalid email address to signup form.
-    validateInvalidEmail(invalidEmail, expectedInputMsg) {
+    validateInvalidEmail(invalidEmail, expectedInputErrMsg) {
         // Enter empty email.
         cy.get(`input[name="emailid"]`).type(invalidEmail);
 
@@ -35,7 +35,7 @@ class Signup {
         cy.get(`input[type="submit"]`).click();
 
         // Check for invalid input message prompt.
-        cy.get('#message9').should('have.text', expectedInputMsg);
+        cy.get('#message9').should('have.text', expectedInputErrMsg);
         
         return this;
     }
