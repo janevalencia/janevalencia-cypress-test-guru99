@@ -73,11 +73,10 @@ This test scenario will be specficially be used to test the login function of th
 
 *"As a user, I should be able to login with my account, so that I can start using the service."*
 
-The site that is being tested has some limitation, including how the account created will only be valid for 20 days (not persistent). Hence, for the purpose of this assessment, I decided to add two types of login testing:
-1. Test that the existing test account saved in `cypress/fixtures/login.json` can be used for login.
-2. Add a `before()` script to create a new account, then use the account to login.
+For this testing purpose, we will be fetching the login data from cypress-fixture `cypress/fixtures/login.json`.
 
-Additionally, this test scenario will also cover the logout functionality.
+Out of scope:
+1. Testing the logout functionality
 
 #### TS_3: Verify that a logged in user should be able to add a new customer.
 This test scenario will be specficially be used to test the adding new customer function of the site being tested, in particular:
@@ -85,11 +84,13 @@ This test scenario will be specficially be used to test the adding new customer 
 *"As a login user, I should be able to access the customer menu, so that I can add a new customer."*
 
 ## Pull-Requests (PRs)
-TBA
+I have purposely created pull-requests to each test scenario being automated to showcase the processes.
 
-## Testing Screenshot & Recording
-TBA
+- TS_1 Sign up: https://github.com/janevalencia/janevalencia-jitera-qa-test/pull/1
+- TS_2 Sign in: https://github.com/janevalencia/janevalencia-jitera-qa-test/pull/2
+- TBA
 
+Each PRs describe the step by step processes and test result snippet.
 ------
 
 This repository which contains the solution created for Jitra QA assessment has been shared to the following Jitera's Github members:
