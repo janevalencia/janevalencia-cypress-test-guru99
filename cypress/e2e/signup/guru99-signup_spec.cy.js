@@ -1,4 +1,4 @@
-import Signup from "../../pages/Signup";
+import { Signup } from '../../pages';
 const signup = new Signup();
 
 describe('TS_1: Verify Signup Page', () => {
