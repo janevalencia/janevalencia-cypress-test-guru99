@@ -4,16 +4,16 @@
     "gender": 1,
     "address" : {
         "street": "testing valid street",
-        "street_over_50len": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEND",
+        "streetOver50len": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaEND",
         "city": "test city",
-        "city_over_25len": "awdadwadadwadswssssssawwaEND",
+        "cityOver25len": "awdadwadadwadswssssssawwaEND",
         "state": "test state",
-        "state_over_25len": "awdadwadadwadswssssssawwaEND"
+        "stateOver25len": "awdadwadadwadswssssssawwaEND"
     },
     "pin": "123456",
-    "pin_over_6len": "1234567",
+    "pinOver6len": "1234567",
     "mobile": "012345678",
-    "mobile_over_15len": "0123456789101112",
-    "email_over_30len": "test123456789000000000@mail.com",
+    "mobileOver15len": "0123456789101112",
+    "emailOver30len": "test123456789000000000@mail.com",
     "password": "test1234"
 } 
