@@ -7,6 +7,12 @@ describe('TS_2: Verify Login Page [existing user]', () => {
         signin.validateLoginPage();
     })
 
+    it('User should be able to login with an existing valid User ID & Password', () => {
+        cy.fixture('login').then((user) => {
+            signin.signin(user.userID, user.password)
+        })
+    })
+
     it('User should see the input error prompt for empty UserID & Password', () => {
         signin.validateEmptyUserID('User-ID must not be blank');
         signin.validateUserIDInputValue('');
@@ -30,11 +36,5 @@ describe('TS_2: Verify Login Page [existing user]', () => {
 
         // Execute reset form.
         signin.validateResetForm();
-    })
-
-    it('User should be able to login with an existing valid User ID & Password', () => {
-        cy.fixture('login').then((user) => {
-            signin.signin(user.userID, user.password)
-        })
     })
 })

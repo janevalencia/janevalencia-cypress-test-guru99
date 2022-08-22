@@ -1,5 +1,16 @@
 /// <reference types="Cypress" />
 class Signin {
+
+    /**
+     * Define form elements (wrapped in function).
+     */
+    constructor() {
+        this.loginBtn = () => cy.get('input[name="btnLogin"]');
+        this.resetBtn = () => cy.get('input[name="btnReset"]');
+        this.userID = () => cy.get('input[name="uid"]');
+        this.password = () => cy.get('input[name="password"]');
+    }
+
     /**
      * Go to the login start page of Guru99.
      */
@@ -18,7 +29,7 @@ class Signin {
         this.inputUserCreds(userID, pwd);
 
         // Click on login button.
-        cy.get('input[name="btnLogin"]').click();
+        this.loginBtn().click();
 
         // Validate URL to check login is successful.
         cy.url().should('include', 'manager/Managerhomepage.php');
@@ -35,10 +46,10 @@ class Signin {
      */
     inputUserCreds(userID, pwd) {
         // Enter userID into the login form.
-        cy.get('input[name="uid"]').type(userID);
+        this.userID().type(userID);
 
         // Enter password into the login form.
-        cy.get('input[name="password"]').type(pwd);
+        this.password().type(pwd);
     }
 
     /**
@@ -48,7 +59,7 @@ class Signin {
      */
     validateEmptyUserID(expectedInputErrMsg) {
         // Trigger the input error prompt by pressing backspace key on User ID input-form.
-        cy.get('input[name="uid"]').type('{backspace}');
+        this.userID().type('{backspace}');
 
         // Check for invalid input error message prompt for User ID input-form.
         cy.get('#message23').should('have.text', expectedInputErrMsg);
@@ -63,7 +74,7 @@ class Signin {
      */
     validateEmptyPassword(expectedInputErrMsg) {
         // Trigger the input error prompt by pressing backspace key on Password input-form.
-        cy.get('input[name="password"]').type('{backspace}');
+        this.password().type('{backspace}');
 
         // Check for invalid input error message prompt for Password input-form.
         cy.get('#message18').should('have.text', expectedInputErrMsg);
@@ -76,20 +87,20 @@ class Signin {
      * 
      */
     validateLoginPage() {
-        cy.get('input[name="uid"]')
+        this.userID()
             .should('exist')
             .should('be.visible');
 
-        cy.get('input[name="password"]')
+            this.password()
             .should('exist')
             .should('be.visible');
 
-        cy.get('input[name="btnLogin"]')
+        this.loginBtn()
             .should('be.visible')
             .should('be.enabled')
             .should('have.value', 'LOGIN');
 
-        cy.get('input[name="btnReset"]')
+        this.resetBtn()
             .should('be.visible')
             .should('be.enabled')
             .should('have.value', 'RESET');
@@ -101,13 +112,13 @@ class Signin {
      */
     validateResetForm() {
         // Click on the RESET button.
-        cy.get('input[name="btnReset"]').click();
+        this.resetBtn().click();
 
         // Check that user ID input form is clear.
-        cy.get('input[name="uid"]').should('have.value', '');
+        this.userID().should('have.value', '');
 
         // Check that user ID input form is clear.
-        cy.get('input[name="password"]').should('have.value', '');
+        this.password().should('have.value', '');
     }
 
     /**
@@ -117,7 +128,7 @@ class Signin {
      */
     validateUserIDInputValue(inputID) {
         // Check the userID input form has the entered value.
-        cy.get('input[name="uid"]')
+        this.userID()
             .invoke('val')
             .then((text) => {
                 expect(text).to.contain(inputID);
@@ -131,7 +142,7 @@ class Signin {
      */
     validatePwdInputValue(inputPwd) {
         // Check the password input form has the entered value.
-        cy.get('input[name="password"]')
+        this.password()
             .invoke('val')
             .then((text) => {
                 expect(text).to.contain(inputPwd);
@@ -150,7 +161,7 @@ class Signin {
      */
     validateInvalidSignIn(expectedAlertErrMsg) {
         // Click on login button.
-        cy.get('input[name="btnLogin"]').click();
+        this.loginBtn().click();
 
         // Check the fired invalid signin alert box.
         cy.on('window:alert', (prompt) => {
