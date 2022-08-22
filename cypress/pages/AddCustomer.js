@@ -1,5 +1,24 @@
 /// <reference types="Cypress" />
 class AddCustomer {
+
+    /**
+     * Define form elements (wrapped in function).
+     */
+    constructor() {
+        this.name = () => cy.get('input[name="name"]');
+        this.gender = () => cy.get('input[type="radio"]');
+        this.dob = () => cy.get('#dob');
+        this.address = () => cy.get('textarea[name="addr"]');
+        this.city = () => cy.get('input[name="city"]');
+        this.state = () => cy.get('input[name="state"]');
+        this.pin = () => cy.get('input[name="pinno"]');
+        this.mobile = () => cy.get('input[name="telephoneno"]');
+        this.email = () => cy.get('input[name="emailid"]');
+        this.password = () => cy.get('input[name="password"]');
+        this.submit = () => cy.get('input[type="submit"]');
+        this.reset = () => cy.get('input[type="reset"]');
+    }
+
     /**
      * Go to the Add Customer page from manager's navigation bar.
      */
@@ -10,62 +29,72 @@ class AddCustomer {
     /**
      * Execute valid form submission.
      */
-    submit() {
+     runSubmit() {
         // Click the submit form button.
-        cy.get('input[type="submit"]').click();
+        this.submit().click();
 
         // Check for success message.
         cy.contains('Customer Registered Successfully!!!').should('be.visible');
 
         // Check that URL has changed.
         cy.url().should('contain', 'CustomerRegMsg.php');
-        
     }
 
     /**
-     * Enter the customer name.
+     * Execute invalid form submission. 
+     * 
+     * @param {String} expectedAlertMsg 
+     */
+     runInvalidSubmission(expectedAlertMsg) {
+        // Click on the submit button.
+        this.submit().click();
+
+        // Verify that a window:alert has open up requesting user to fill all fields.
+        cy.on('window:alert', (prompt) => {
+            expect(prompt).to.contains(expectedAlertMsg);
+        })
+    }
+
+    /**
+     * Enter (manual) or auto-generate (unique) the customer name.
      * 
      * @param {String} name 
      */
     inputCustomerName(name) {
         // Enter name into customer name input field (if name is provided).
         if (name) {
-            cy.get('input[name="name"]').type(name);
-
-            // Validate that the input field now has that value.
-            cy.get('input[name="name"]').should('have.value', name);
+            this.name().type(name);
         }
 
-        // Enter random name into customer name input field.
+        // Enter random-unique name into customer name input field.
         if (!name) {
+            // Call cypress customer command.
             cy.typeRandomString('input[name="name"]', 5);
-        
-            // Saved the email being generated here for further use.
-            cy.get('input[name="name"]').invoke('val').as('nameRegistered');
-            
-            // Validate that the input field now has that value.
-            cy.get('@nameRegistered').then((data) => {
-                const name = data;
-                cy.get('input[name="name"]').should('have.value', name);
-            })
         }
+
+        // Save the email being entered for further use.
+        this.name().invoke('val').as('nameRegistered');
+
+        // Validate that the input field now has that value.
+        cy.get('@nameRegistered').then((data) => {
+            const name = data;
+            cy.get('input[name="name"]').should('have.value', name);
+        })
+
+        return this;
     }
 
     /**
-     * Enter the customer gender option: 0 or 1.
+     * Enter the customer gender.
      * 
      * @param {Number} option (0 (male) or 1(female))
      */
     inputGender(option) {
         // Click the gender option checkbox.
-        cy.get('input[type="radio"]')
-            .eq(option)
-            .click();
+        this.gender().eq(option).click();
         
         // Verify the gender option selected is checked.
-        cy.get('input[type="radio"]')
-            .eq(option)
-            .should('be.checked');
+        this.gender().eq(option).should('be.checked');
 
         return this;
     }
@@ -73,14 +102,14 @@ class AddCustomer {
     /**
      * Enter the DOB.
      * 
-     * @param {String} dob 
+     * @param {String} dob (format: YYYY-MM-DD)
      */
     inputDOB(dob) {
-        // Enter name into DOB input field.
-        cy.get('#dob').type(dob);
+        // Enter DOB (date of birth).
+        this.dob().type(dob);
 
         // Validate that the input field now has that value.
-        cy.get('#dob').should('have.value', dob);
+        this.dob().should('have.value', dob);
 
         return this;
     }
@@ -91,41 +120,41 @@ class AddCustomer {
      * @param {String} street 
      */
     inputAddress(street) {
-        // Enter name into address input field.
-        cy.get('textarea[name="addr"]').type(street);
+        // Enter street address.
+        this.address().type(street);
 
         // Validate that the input field now has that value.
-        cy.get('textarea[name="addr"]').should('have.value', street);
+        this.address().should('have.value', street);
 
         return this;
     }
 
     /**
-     * Enter the address (city).
+     * Enter the city.
      * 
      * @param {String} city 
      */
     inputCity(city) {
-        // Enter name into address input field.
-        cy.get('input[name="city"]').type(city);
+        // Enter city.
+        this.city().type(city);
 
         // Validate that the input field now has that value.
-        cy.get('input[name="city"]').should('have.value', city);
+        this.city().should('have.value', city);
 
         return this;
     }
 
     /**
-     * Enter the address (state).
+     * Enter the state.
      * 
      * @param {String} state 
      */
     inputState(state) {
-        // Enter name into state input field.
-        cy.get('input[name="state"]').type(state);
+        // Enter state.
+        this.state().type(state);
 
         // Validate that the input field now has that value.
-        cy.get('input[name="state"]').should('have.value', state);
+        this.state().should('have.value', state);
 
         return this;
     }
@@ -136,11 +165,11 @@ class AddCustomer {
      * @param {String} pin 
      */
     inputPIN(pin) {
-        // Enter name into state input field.
-        cy.get('input[name="pinno"]').type(pin);
+        // Enter PIN.
+        this.pin().type(pin);
 
         // Validate that the input field now has that value.
-        cy.get('input[name="pinno"]').should('have.value', pin);
+        this.pin().should('have.value', pin);
 
         return this;
     }
@@ -151,40 +180,40 @@ class AddCustomer {
      * @param {String} mobile 
      */
     inputMobile(mobile) {
-        // Enter name into state input field.
-        cy.get('input[name="telephoneno"]').type(mobile);
+        // Enter mobile number.
+        this.mobile().type(mobile);
 
         // Validate that the input field now has that value.
-        cy.get('input[name="telephoneno"]').should('have.value', mobile);
+        this.mobile().should('have.value', mobile);
 
         return this;
     }
 
     /**
-     * Enter the email.
+     * Enter (manual) or auto-generate (unique) the customer name.
      * 
      * @param {String} email 
      */
     inputEmail(email) {
+        // Enter email manually if email is provided (not auto-generated).
         if (email) {
-            // Enter name into state input field.
-            cy.get('input[name="emailid"]').type(email);
-            cy.get('input[name="emailid"]').should('have.value', email);
+            this.email().type(email);
         }
 
+        // Enter valid random-unique email.
         if (!email) {
-            // Enter valid email using custom Cypress command (/support/commands.js) to create random valid email.
+            // Call custom cypress command.
             cy.typeValidEmailToSelector(`input[name="emailid"]`);
-            
-            // Saved the email being generated here for further use.
-            cy.get('input[name="emailid"]').invoke('val').as('emailRegistered');
-            
-            // Validate that the input field now has that value.
-            cy.get('@emailRegistered').then((data) => {
-                const email = data;
-                cy.get('input[name="emailid"]').should('have.value', email);
-            })
         }
+
+        // Saved the email value here for further use.
+        this.email().invoke('val').as('emailRegistered');
+            
+        // Validate that the input field now has that value.
+        cy.get('@emailRegistered').then((data) => {
+            const email = data;
+            this.email().should('have.value', email);
+        })
 
         return this;
     }
@@ -195,144 +224,127 @@ class AddCustomer {
      * @param {String} password 
      */
     inputPassword(password) {
-        // Enter name into state input field.
-        cy.get('input[name="password"]').type(password);
+        // Enter password into state input field.
+        this.password().type(password);
 
         // Validate that the input field now has that value.
-        cy.get('input[name="password"]').should('have.value', password);
+        this.password().should('have.value', password);
 
         return this;
     }
 
     /**
-     * Execute invalid form submission. 
-     * 
-     * @param {String} expectedAlertMsg 
-     */
-    invalidSubmission(expectedAlertMsg) {
-        // Click on the submit button.
-        cy.get('input[type="submit"]').click();
-
-        // Verify that a window:alert has open up requesting user to fill all fields.
-        cy.on('window:alert', (prompt) => {
-            expect(prompt).to.contains(expectedAlertMsg);
-        })
-    }
-
-    /**
      * Validate the entered customer data matches with the submitted customer.
-     * 
      */
     validateSubmittedCustomer() {
-        // Check for created Customer ID.
+        // Verify CUSTOMER ID is created by the system.
         cy.contains('Customer ID').siblings().should('be.visible');
 
-        // Verify customer name matches with the entered customer data saved as @nameRegistered.
-        cy.get('@nameRegistered').then((data) => {
-            const name = data;
+        // Verify CUSTOMER NAME matches with the entered customer data saved as @nameRegistered.
+        cy.get('@nameRegistered').then((name) => {
             cy.get('td').contains('Customer Name').siblings().should('have.text', name);
         })
 
         cy.fixture('customer').then((customer) => {
-            // Verify gender matches with the entered customer data (fixture).
-            // Considering a switch here instead (refactor later).
-            if (customer.gender === 0) {
-                cy.get('td').contains('Gender').siblings().should('have.text', 'male');
-            }
-
-            if (customer.gender === 1) {
-                cy.get('td').contains('Gender').siblings().should('have.text', 'female');
+            // Verify GENDER matches with the entered customer data (fixture).
+            switch (customer.gender) {
+                case 0:
+                    cy.get('td').contains('Gender').siblings().should('have.text', 'male');
+                    break;
+                case 1:
+                    cy.get('td').contains('Gender').siblings().should('have.text', 'female');
+                    break;
             }
 
             // Verify DOB matches with the entered customer data (fixture).
             cy.get('td').contains('Birthdate').siblings().should('have.text', customer.dob);
 
-            // Verify address matches with the entered customer data (fixture).
+            // Verify ADDRESS matches with the entered customer data (fixture).
             cy.get('td').contains('Address').siblings().should('have.text', customer.address.street);
 
-            // Verify city matches with the entered customer data (fixture).
+            // Verify CITY matches with the entered customer data (fixture).
             cy.get('td').contains('City').siblings().should('have.text', customer.address.city);
 
-            // Verify state matches with the entered customer data (fixture).
+            // Verify STATE matches with the entered customer data (fixture).
             cy.get('td').contains('State').siblings().should('have.text', customer.address.state);
 
             // Verify PIN matches with the entered customer data (fixture).
             cy.get('td').contains('Pin').siblings().should('have.text', customer.pin);
 
-            // Verify mobiole number matches with the entered customer data (fixture).
+            // Verify MOBILE number matches with the entered customer data (fixture).
             cy.get('td').contains('Mobile No.').siblings().should('have.text', customer.mobile);
         })
         
-        // Verify email matches with the entered customer data saved as @emailRegistered.
-        cy.get('@emailRegistered').then((data) => {
-            const email = data;
+        // Verify EMAIL matches with the entered customer data saved as @emailRegistered.
+        cy.get('@emailRegistered').then((email) => {
             cy.get('td').contains('Email').siblings().should('have.text', email);
         })
     }
 
     /**
-     * Validate UI elements on Add Customer page visible and exist.
+     * Validate UI elements on Add Customer page.
      */
     validateAddCustomerPage() {
         // Verify the form header.
         cy.get('.heading3').should('have.text', 'Add New Customer');
 
         // Verify input field for Customer Name.
-        cy.get('input[name="name"]')
+        this.name()
             .should('exist')
             .should('be.visible');
 
-        // Verify checkbox for Gender.
-        cy.get('input[type="radio"]')
+        // Verify checkbox for Gender: Male.
+        this.gender()
             .eq(0)
             .should('exist')
             .should('be.visible')
             .should('have.value', 'm')
             .should('be.checked');
 
-        cy.get('input[type="radio"]')
+        // Verify checkbox for Gender: Female.
+        this.gender()
             .eq(1)
             .should('exist')
             .should('be.visible')
             .should('have.value', 'f');
 
-        // Verify date field for DOB (Date of Birth).
-        cy.get('#dob')
+        // Verify date input for DOB.
+        this.dob()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for Address.
-        cy.get('textarea[name="addr"]')
+        this.address()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for City.
-        cy.get('input[name="city"]')
+        this.city()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for State.
-        cy.get('input[name="state"]')
+        this.state()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for PIN.
-        cy.get('input[name="pinno"]')
+        this.pin()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for Mobile Number.
-        cy.get('input[name="telephoneno"]')
+        this.mobile()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for Email.
-        cy.get('input[name="emailid"]')
+        this.email()
             .should('exist')
             .should('be.visible');
 
         // Verify input field for Password.
-        cy.get('input[name="password"]')
+        this.password()
             .should('exist')
             .should('be.visible');
     }
@@ -344,8 +356,8 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateEmptyCustomerName(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="name"]').type('{backspace}');
+        // Trigger backspace.
+        this.name().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message')
@@ -363,8 +375,8 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidCustomerName(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="name"]').type(invalidInput);
+        // Enter invalid input.
+        this.name().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message')
@@ -376,23 +388,21 @@ class AddCustomer {
 
     /**
      * Validate the length of the entered customer name compared to the max limit of 25 chars.
-     * @param {String} input 
+     * 
+     * @param {String} input (more than 25 characters)
      */
     validateCustomerNameLength(input) {
         const maxLength = 25;
-
-        if (input.length > 25) {
-            // Enter the input value.
-            cy.get('input[name="name"]').type(input);
         
-            cy.get('input[name="name"]').invoke('val').then(($value) => {
-                // Validate the accepted value length to remain 25 characters.
-                expect($value).to.has.length(maxLength);
-
-                // Validate the accepted value is not equal to the actual input.
-                expect($value).to.not.equal(input);
-            })
-        }
+        this.name().type(input);
+        
+        this.name().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 25 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
     }
 
     /**
@@ -402,8 +412,7 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateValidDOB(validInput) {
-        // Click signup button.
-        cy.get('#dob').type(validInput);
+        this.dob().type(validInput);
 
         // Check error prompt should not be visible.
         cy.get('#message24').should('not.be.visible');
@@ -418,8 +427,8 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateEmptyAddress(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('textarea[name="addr"]').type('{backspace}');
+        // Trigger backspace.
+        this.address().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message3')
@@ -437,8 +446,7 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidAddress(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('textarea[name="addr"]').type(invalidInput);
+        this.address().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message3')
@@ -449,14 +457,33 @@ class AddCustomer {
     }
 
     /**
-     * Validate empty City input field. 
+     * Validate the length of the entered address compared to the max limit of 50 chars.
+     * 
+     * @param {String} input (more than 50 characters)
+     */
+    validateAddressLength(input) {
+        const maxLength = 50;
+        
+        this.address().type(input);
+        
+        this.address().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 50 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
+    }
+
+    /**
+     * Validate empty city input field. 
      * 
      * @param {String} expectedInputErrMsg 
      * @returns Cypress assertion command chain.
      */
     validateEmptyCity(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="city"]').type('{backspace}');
+        // Trigger backspace.
+        this.city().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message4')
@@ -474,8 +501,7 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidCity(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="city"]').type(invalidInput);
+        this.city().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message4')
@@ -486,14 +512,33 @@ class AddCustomer {
     }
 
     /**
+     * Validate the length of the entered city compared to the max limit of 25 chars.
+     * 
+     * @param {String} input (more than 25 characters)
+     */
+    validateCityLength(input) {
+        const maxLength = 25;
+        
+        this.city().type(input);
+        
+        this.city().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 25 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
+    }
+
+    /**
      * Validate empty State input field. 
      * 
      * @param {String} expectedInputErrMsg 
      * @returns Cypress assertion command chain.
      */
     validateEmptyState(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="state"]').type('{backspace}');
+        // Trigger backspace.
+        this.state().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message5')
@@ -511,8 +556,7 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidState(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="state"]').type(invalidInput);
+        this.state().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message5')
@@ -523,14 +567,33 @@ class AddCustomer {
     }
 
     /**
+     * Validate the length of the entered state compared to the max limit of 25 chars.
+     * 
+     * @param {String} input (more than 25 characters)
+     */
+    validateStateLength(input) {
+        const maxLength = 25;
+        
+        this.state().type(input);
+        
+        this.state().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 25 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
+    }
+
+    /**
      * Validate empty PIN number input field. 
      * 
      * @param {String} expectedInputErrMsg 
      * @returns Cypress assertion command chain.
      */
     validateEmptyPIN(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="pinno"]').type('{backspace}');
+        // Trigger backspace.
+        this.pin().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message6')
@@ -548,8 +611,11 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidPIN(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="pinno"]').type(invalidInput);
+        // Clear the form.
+        this.reset().click();
+
+        // Enter the pin.
+        this.pin().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message6')
@@ -560,14 +626,33 @@ class AddCustomer {
     }
 
     /**
+     * Validate the length of the entered PIN compared to the max limit of 6 chars.
+     * 
+     * @param {String} input (more than 6 characters)
+     */
+     validatePINLength(input) {
+        const maxLength = 6;
+        
+        this.pin().type(input);
+        
+        this.pin().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 6 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
+    }
+
+    /**
      * Validate empty mobile number input field. 
      * 
      * @param {String} expectedInputErrMsg 
      * @returns Cypress assertion command chain.
      */
     validateEmptyMobile(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="telephoneno"]').type('{backspace}');
+        // Trigger backspace.
+        this.mobile().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message7')
@@ -585,8 +670,11 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidMobile(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="telephoneno"]').type(invalidInput);
+        // Clear the form.
+        this.reset().click();
+
+        // Enter mobile number.
+        this.mobile().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message7')
@@ -597,6 +685,25 @@ class AddCustomer {
     }
 
     /**
+     * Validate the length of the entered mobile number compared to the max limit of 15 chars.
+     * 
+     * @param {String} input (more than 15 characters)
+     */
+     validateMobileLength(input) {
+        const maxLength = 15;
+        
+        this.mobile().type(input);
+        
+        this.mobile().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 6 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
+    }
+
+    /**
      * Validate empty email input field. 
      * 
      * @param {String} expectedInputErrMsg 
@@ -604,7 +711,7 @@ class AddCustomer {
      */
     validateEmptyEmail(expectedInputErrMsg) {
         // Click signup button.
-        cy.get('input[name="emailid"]').type('{backspace}');
+        this.email().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message9')
@@ -622,8 +729,11 @@ class AddCustomer {
      * @returns Cypress assertion command chain.
      */
     validateInvalidEmail(invalidInput, expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="emailid"]').type(invalidInput);
+        // Clear form.
+        this.reset().click();
+
+        // Enter invalid input.
+        this.email().type(invalidInput);
 
         // Check for invalid input message prompt.
         cy.get('#message9')
@@ -634,14 +744,33 @@ class AddCustomer {
     }
 
     /**
+     * Validate the length of the entered email compared to the max limit of 30 chars.
+     * 
+     * @param {String} input (more than 30 characters)
+     */
+     validateEmailLength(input) {
+        const maxLength = 30;
+        
+        this.email().type(input);
+        
+        this.email().invoke('val').then(($value) => {
+            // Validate the accepted value length to remain 6 characters.
+            expect($value).to.has.length(maxLength);
+        
+            // Validate the accepted value is not equal to the actual input.
+            expect($value).to.not.equal(input);
+        })
+    }
+
+    /**
      * Validate empty password input field. 
      * 
      * @param {String} expectedInputErrMsg 
      * @returns Cypress assertion command chain.
      */
     validateEmptyPassword(expectedInputErrMsg) {
-        // Click signup button.
-        cy.get('input[name="password"]').type('{backspace}');
+        // Trigger backspace.
+        this.password().type('{backspace}');
 
         // Check for invalid input message prompt.
         cy.get('#message18')
