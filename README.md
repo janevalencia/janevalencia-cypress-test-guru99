@@ -82,7 +82,9 @@ This test scenario will be specficially be used to test the adding new customer 
 The detail test cases created for **Add Customer test scenario** can be found [TC_Customer](https://docs.google.com/spreadsheets/d/1k9tS9BfSCjUXvxL6lgtluAWGVuZh-c5R8s7MlHx0v58/edit#gid=1731047278).
 
 ## Pull-Requests (PRs)
+
 Each PRs describe the step by step processes and test result snippet. Please go to [here](https://github.com/janevalencia/janevalencia-cypress-test-guru99/pulls?q=is%3Apr+is%3Aclosed)
+
 ------
 
 Thank you!
