@@ -1,7 +1,7 @@
 {
-  "name": "janevalencia-jitera-qa-test",
+  "name": "janevalencia-cypress-test-guru99",
   "version": "1.0.0",
-  "description": "Jitera's QA Automation assessment done by applicant Jane Valencia",
+  "description": "QA Automation sample done on guru99 using Cypress by Jane Valencia",
   "scripts": {
     "cypress:run": "cypress run",
     "cypress:open": "cypress open",
