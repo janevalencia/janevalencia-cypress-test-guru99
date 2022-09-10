@@ -1,23 +1,10 @@
-# janevalencia-jitera-qa-test
-Applicant: **Jane Valencia**
-
+# janevalencia-cypress-test-guru99
 Role: **Software Engineer in Test / QA Automation Engineer**
 
-Company: **Jitera**
-
-Kindly read the following document to understand the test coverage and strategy being used to complete the automation test for the purpose of this assessment.
-
-Thank you!
-
-## Assessment
-This is the QA coding assignment with the purpose of testing the coding skill and automation skills of the candidates who apply to Jitera as QA Automation Engineer.
-
-The full description of the QA Automation Assignment can be accessed [here](https://iruuzainc.notion.site/QA-Automation-Assignment-76584d8a16f74e28a9b98c2f99bce003).
-
-In summary, the assessmment is to be graded based on:
+Task to be graded based on:
 - The coding style needs to be easy to read
-- Apply POM design pattern
-- Optional: JS/TS, Cucumber
+- POM design pattern
+- JS/TS proficiency
 
 The site to be tested is https://demo.guru99.com/V4/.
 
@@ -61,6 +48,8 @@ In addition, I have also created the following temporary test account which to b
 ```
 **Note: The test user credential is saved under `cypress/fixtures/login.json`.**
 
+The credential might be obsolete as it should expire within 20 days, hence, you may need to replace with the newly generated guru99 credential.
+
 #### TS_1: Verify that a new user should be able to signup for an account
 This test scenario will be specficially be used to test the signup function of the site being tested, in particular:
 
@@ -93,21 +82,7 @@ This test scenario will be specficially be used to test the adding new customer 
 The detail test cases created for **Add Customer test scenario** can be found [TC_Customer](https://docs.google.com/spreadsheets/d/1k9tS9BfSCjUXvxL6lgtluAWGVuZh-c5R8s7MlHx0v58/edit#gid=1731047278).
 
 ## Pull-Requests (PRs)
-I have purposely created pull-requests to each test scenario being automated to showcase the processes.
-
-- TS_1 Sign up: https://github.com/janevalencia/janevalencia-jitera-qa-test/pull/1
-- TS_2 Login: https://github.com/janevalencia/janevalencia-jitera-qa-test/pull/2
-- TS_3 Add Customer: https://github.com/janevalencia/janevalencia-jitera-qa-test/pull/3
-
-Each PRs describe the step by step processes and test result snippet.
+Each PRs describe the step by step processes and test result snippet. Please go to [here](https://github.com/janevalencia/janevalencia-cypress-test-guru99/pulls?q=is%3Apr+is%3Aclosed)
 ------
 
-This repository which contains the solution created for Jitra QA assessment has been shared to the following Jitera's Github members:
-- [harry](https://github.com/LeVinhGithub)
-- [takuwan0405](https://github.com/takuwan0405)
-
-Furthermore, the link to this repository has also been submitted via email at hr@jitera.com.
-
-Thank you so much for the opportunity to be able to take on this assessment. I hope the solution presented here can highlight some of my experience and skill as QA / Software Engineer in Test. 
-
-Please kindly reach out to me if there is any issue opening the document/sheet being shared here or you need further clarification towards the solution being presented. I look forward to hearing your feedback!
+Thank you!
